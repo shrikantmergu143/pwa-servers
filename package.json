@@ -1,0 +1,22 @@
+{
+  "name": "node-sandbox",
+  "version": "1.0.0",
+  "description": "Simple Node Sandbox",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js localhost 8080"
+  },
+  "dependencies": {
+    "@types/express": "^4.16.0",
+    "@types/node": "^10.12.2",
+    "@types/pty.js": "^0.2.35",
+    "@types/socket.io": "^2.1.0",
+    "express": "^4.16.4",
+    "express-ws": "^4.0.0",
+    "node-pty": "0.8.1",
+    "systeminformation": "^4.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.4"
+  }
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Hello Woo!</h1>
+    <div>
+      <h3>广播消息</h3>
+      <input type="text" id="msg_input" /> <button onclick="send">发送</button>
+
+      <div style="margin: 10px 0;" id="clientListBox"></div>
+    </div>
+  </body>
+  <script>
+    window.onload = function () {
+      //创建WebSocket('WebSocket服务器地址')
+      let socket = new WebSocket("wss://localhost:8080/");
+      //监听WebSocket事件 open和WebSocket服务器连接成功触发
+      socket.addEventListener("open", () => {
+        console.log("链接成功");
+        socket.send(JSON.stringify({ type: "panel" }));
+      });
+
+      //接受websocket服务的消息
+      socket.addEventListener("message", (msg) => {
+        console.log(msg.data);
+        const data = JSON.parse(msg.data);
+        if (data.sendTo === "panel") {
+          const clientList = data.data;
+          renderClientList(clientList);
+        } else {
+        }
+      });
+      //端口服务
+      socket.addEventListener("close", () => {
+        console.log("服务断开");
+      });
+
+      function renderClientList(list) {
+        let html = "";
+        list.forEach((item) => {
+          html += `<li>名称:${item.name}</li>`;
+        });
+        html = `<ul>${html}</ul>`;
+        clientListBox.innerHTML = html;
+      }
+    };
+    function send() {
+      socket.send(JSON.stringify({ type: "msg", msg: msg_input.value }));
+      alert("发送成功");
+    }
+  </script>
+</html>
